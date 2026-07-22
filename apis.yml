@@ -1,0 +1,48 @@
+name: Apstal
+description: >-
+  AI-powered conversational website analytics tool that delivers insights into traffic, visitors, and conversions
+  through natural language, plus a hosted MCP server for agent access to analytics data.
+url: https://apstal.apievangelist.com/apis.yml
+created: '2026-07-22'
+modified: '2026-07-22'
+specificationVersion: '0.21'
+tags:
+  - Web Analytics
+  - Product Analytics
+  - Conversational AI
+  - Session Replay
+  - Privacy Analytics
+  - MCP
+  - Agent-Native
+  - E-commerce Analytics
+apis:
+  - name: Apstal MCP Server
+    description: >-
+      Hosted Model Context Protocol server exposing analytics tools (execute_sql, get_analytics, list_projects,
+      register_domain, get_schema, generate_api_key) over Streamable HTTP with JSON-RPC 2.0 and Bearer auth.
+    humanURL: https://apstal.com/docs/mcp
+    baseURL: https://apstal.com/api/mcp
+    tags:
+      - Web Analytics
+      - Product Analytics
+      - Conversational AI
+      - Session Replay
+      - Privacy Analytics
+      - MCP
+      - Agent-Native
+      - E-commerce Analytics
+    properties:
+      - type: MCP
+        url: https://apstal.com/api/mcp
+      - type: Documentation
+        url: https://apstal.com/docs/mcp
+      - type: Documentation
+        url: https://apstal.com/.well-known/mcp/server-card.json
+maintainers:
+  - FN: Apstal
+    url: https://apstal.com
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 90
+  at: '2026-07-22T17:38:04.831Z'
