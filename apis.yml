@@ -40,7 +40,7 @@ apis:
       - bigquery
       - gdpr
     properties:
-      - type: MCP
+      - type: MCPServer
         url: https://apstal.com/api/mcp
       - type: Documentation
         url: https://apstal.com/docs/mcp
