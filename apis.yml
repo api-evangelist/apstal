@@ -1,11 +1,18 @@
 name: Apstal
 description: >-
-  AI-first website analytics and visitor tracking platform that replaces traditional dashboards with a natural-language
-  chatbot interface, offering conversational analytics, cookieless tracking, session replays, and heatmaps. Programmatic
-  access is provided through a hosted MCP server exposing analytics tools.
+  AI-first website analytics and visitor tracking platform that replaces traditional dashboards with a
+  natural-language chatbot interface, offering conversational analytics, cookieless tracking, session
+  replays, heatmaps, funnels, error tracking, Core Web Vitals and AI-agent traffic detection. Apstal is
+  agent-native by design: its primary programmatic surface is a hosted MCP server at
+  https://apstal.com/api/mcp (JSON-RPC 2.0 over Streamable HTTP, protocol 2025-06-18) whose tools/list is
+  answerable anonymously, backed by a documented REST ingestion and stats API, a WebSocket real-time
+  stream, an SSE natural-language query endpoint, an A2A agent card, two provider-authored Agent Skills,
+  an llms.txt, OAuth 2.0 authorization-server and protected-resource metadata, and an MCP server card.
+  The company is based in Poland and publishes a GDPR Data Processing Agreement.
 url: https://apstal.apievangelist.com/apis.yml
 created: '2026-07-22'
-modified: '2026-07-22'
+modified: '2026-08-13'
+image: https://apstal.com/logos/apstal-mark.svg
 specificationVersion: '0.21'
 tags:
   - analytics
@@ -19,6 +26,10 @@ tags:
   - llms-txt
   - bigquery
   - gdpr
+  - a2a
+  - agent-skills
+  - bot-detection
+  - core-web-vitals
 apis:
   - name: Apstal MCP Server
     description: >-
@@ -41,13 +52,35 @@ apis:
       - gdpr
     properties:
       - type: MCPServer
-        url: https://apstal.com/api/mcp
+        url: mcp/apstal-mcp.yml
+      - type: ToolCrosswalk
+        url: mcp/apstal-tool-crosswalk.yml
       - type: Documentation
         url: https://apstal.com/docs/mcp
-      - type: LLMSTxt
-        url: https://apstal.com/llms.txt
+      - type: LLMsTxt
+        url: llms/apstal-llms.txt
+  - name: Apstal Analytics API
+    description: >-
+      Documented REST surface for programmatic access to Apstal analytics: POST /api/v1/m for batched event
+      ingestion (max 100 events per request), POST /api/v1/stream for rrweb session-replay chunk upload,
+      GET /api/analytics/quick for aggregated dashboard metrics, and POST /api/ai/semantic for
+      natural-language analytics queries answered as a text/event-stream. A WebSocket service at
+      wss://ws.apstal.com carries tracker, dashboard and replay-viewer connections. Authentication is a
+      Bearer API key (apstal_ prefix) or a Supabase session JWT. No OpenAPI is published.
+    humanURL: https://apstal.com/docs/api
+    baseURL: https://apstal.com/api
+    tags:
+      - analytics
+      - web-analytics
+      - session-replay
+      - core-web-vitals
+      - websocket
+      - server-sent-events
+    properties:
+      - type: APIReference
+        url: https://apstal.com/docs/api
       - type: Documentation
-        url: https://apstal.com/.well-known/mcp/server-card.json
+        url: https://apstal.com/docs
 maintainers:
   - FN: Apstal
     url: https://apstal.com
@@ -56,3 +89,75 @@ generated:
   model: claude-opus-4-8
   confidence: 95
   at: '2026-07-22T20:28:11.444Z'
+common:
+- type: DomainSecurity
+  url: security/apstal-domain-security.yml
+- type: WellKnown
+  url: well-known/apstal-well-known.yml
+- type: AgentCard
+  url: a2a/apstal-a2a.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/apstal-llms.txt
+- type: Authentication
+  url: authentication/apstal-authentication.yml
+- type: OAuthScopes
+  url: scopes/apstal-scopes.yml
+- type: ErrorCatalog
+  url: errors/apstal-problem-types.yml
+- type: Conventions
+  url: conventions/apstal-conventions.yml
+- type: Lifecycle
+  url: lifecycle/apstal-lifecycle.yml
+- type: StatusPage
+  url: https://status.apstal.com
+- type: Plans
+  url: plans/apstal-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/apstal-rate-limits.yml
+- type: Packages
+  url: packages/apstal-packages.yml
+- type: SDKs
+  url: packages/apstal-packages.yml
+- type: Components
+  url: components/apstal-components.yml
+- type: DataModel
+  url: data-model/apstal-data-model.yml
+- type: Conformance
+  url: conformance/apstal-conformance.yml
+- type: Compliance
+  url: https://apstal.com/dpa
+- type: EventSurface
+  url: asyncapi/apstal-realtime-events.yml
+- type: DeveloperPortal
+  url: https://apstal.com/docs
+- type: Documentation
+  url: https://apstal.com/docs
+- type: APIReference
+  url: https://apstal.com/docs/api
+- type: GettingStarted
+  url: https://apstal.com/docs/getting-started
+- type: Quickstart
+  url: https://apstal.com/docs/quickstart
+- type: Support
+  url: https://apstal.com/contact
+- type: HelpCenter
+  url: https://apstal.com/faq
+- type: Blog
+  url: https://apstal.com/blog
+- type: GitHubOrganization
+  url: https://github.com/apstal
+- type: Pricing
+  url: https://apstal.com/pricing
+- type: SignUp
+  url: https://apstal.com/login
+- type: TermsOfService
+  url: https://apstal.com/terms
+- type: PrivacyPolicy
+  url: https://apstal.com/privacy
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 27
+  pass: local-v1
