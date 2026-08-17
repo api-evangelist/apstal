@@ -9,7 +9,7 @@ description: >-
   stream, an SSE natural-language query endpoint, an A2A agent card, two provider-authored Agent Skills,
   an llms.txt, OAuth 2.0 authorization-server and protected-resource metadata, and an MCP server card.
   The company is based in Poland and publishes a GDPR Data Processing Agreement.
-url: https://apstal.apievangelist.com/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/apstal/refs/heads/main/apis.yml
 created: '2026-07-22'
 modified: '2026-08-13'
 image: https://apstal.com/logos/apstal-mark.svg
