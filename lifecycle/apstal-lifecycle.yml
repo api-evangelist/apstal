@@ -1,0 +1,54 @@
+generated: '2026-08-13'
+method: searched
+source: https://status.apstal.com/
+docs:
+- https://apstal.com/docs/api
+- https://apstal.com/docs/mcp
+- https://apstal.com/terms
+versioning:
+  scheme: uri-path (ingestion only)
+  current: v1
+  note: >-
+    Only the ingestion endpoints carry a version segment (/api/v1/m, /api/v1/stream). The read
+    surface (/api/analytics/quick, /api/ai/semantic) and the MCP endpoint (/api/mcp) are
+    unversioned. The MCP server declares the MCP protocol version 2025-06-18 and a serverInfo
+    version of 1.0.0, which are protocol/server versions, not API versions.
+  docs: https://apstal.com/docs/api
+deprecation:
+  policy_url: null
+  sunset_header: null
+  note: >-
+    No deprecation policy, no versioning policy, no Sunset/Deprecation (RFC 8594) header support
+    and no breaking-change notice period are published anywhere on apstal.com. Searched
+    /docs/api, /docs/mcp, /terms and the docs index.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No SLA or uptime commitment is published. The status page reports observed uptime but states
+    no target. Support response is tiered by plan (Community & email / Priority 24h / Priority
+    direct) per the pricing page, and the contact page says "we typically respond within 24 hours".
+status_page:
+  url: https://status.apstal.com
+  http_status: 200
+  provider: Better Stack
+  services:
+  - name: Dashboard & Main Website
+    observed_uptime: 98.216%
+  - name: Analytics Engine & Tracker
+    observed_uptime: 99.983%
+  - name: Data Ingestion API
+    observed_uptime: 99.151%
+  features: [per-service uptime history, maintenance schedule, previous incidents]
+  observed_at: '2026-08-13'
+data_retention:
+  session_replays: 30 days default (42 hours on the free plan); Enterprise may request longer
+  event_data: 6 months (Free) / 12 months (Premium) / custom (Enterprise)
+  mechanism: automatic cleanup cron deletes replay chunks after retention
+  source: https://apstal.com/docs/api, https://apstal.com/pricing
+changelog:
+  url: null
+  note: >-
+    No changelog or release-notes page is published on apstal.com. The npm package
+    @apstal/analytics and the GitHub repo apstal/analytics are the only dated release surface.
+deprecated_operations: []

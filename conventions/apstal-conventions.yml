@@ -1,0 +1,97 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/docs/api
+docs:
+- https://apstal.com/docs/api
+- https://apstal.com/docs/mcp
+- https://apstal.com/auth.md
+- https://apstal.com/docs/tracker
+note: >-
+  Cross-cutting request/response semantics captured from Apstal's own documentation. There is no
+  OpenAPI to derive from, so every line below is sourced from a published page or a live probe.
+  Absences are recorded as absences - they are the most useful part of this file.
+authentication:
+  style: Bearer token in the Authorization header
+  key_prefix: apstal_
+  alternative: Supabase session JWT (dashboard + /api/ai/semantic)
+  oauth2: authorizationCode + refreshToken, scopes read/write/admin
+  see: authentication/apstal-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    No idempotency key, no de-duplication contract, and no retry-safety statement is published
+    for any endpoint - including POST /api/v1/m (event ingestion) and POST /api/v1/stream
+    (session-replay chunk upload), both of which are retried by the tracker in practice. An
+    agent has no published way to make a write safely repeatable.
+pagination:
+  supported: false
+  note: >-
+    No pagination scheme is documented on any endpoint. GET /api/analytics/quick returns
+    fixed-shape aggregates (topPages, topReferrers, countries) with no page/cursor/limit
+    parameters. execute_sql exposes SQL LIMIT/OFFSET instead.
+filtering:
+  time_range:
+    parameter: period
+    values: [24h, 7d, 30d, 90d]
+    default: 7d
+    override: start / end as ISO dates
+    endpoint: GET /api/analytics/quick
+  project_scope:
+    parameter: projectId
+    required: true
+    note: >-
+      Every call is scoped to a Project ID. Over MCP the project_id is injected server-side into
+      execute_sql if the caller omits it.
+field_expansion:
+  supported: false
+metadata:
+  supported: true
+  note: >-
+    The analytics events table carries a `metadata` JSON column for additional fields; over
+    execute_sql it is read with BigQuery JSON_EXTRACT_SCALAR.
+  source: https://apstal.com/docs/mcp
+request_tracing:
+  request_id_header: null
+  note: No request-id or correlation-id header is documented.
+versioning:
+  scheme: uri-path (partial)
+  note: >-
+    Ingestion endpoints are versioned in the path (/api/v1/m, /api/v1/stream). The read surface
+    is NOT versioned (/api/analytics/quick, /api/ai/semantic). The MCP server declares an MCP
+    protocol version (2025-06-18) rather than an Apstal API version.
+  see: lifecycle/apstal-lifecycle.yml
+error_envelope:
+  format: bare-status
+  success_shape: '{"ok": true, ...}'
+  problem_json: false
+  see: errors/apstal-problem-types.yml
+rate_limit_signaling:
+  headers_documented: []
+  status_on_exhaustion: 429
+  note: >-
+    A 429 is documented ("Retry after the specified delay") but no RateLimit-*, X-RateLimit-* or
+    Retry-After header is named. The MCP surface signals budget in-band instead, via a
+    `creditsRemaining` field on tool responses.
+  see: rate-limits/apstal-rate-limits.yml
+content_negotiation:
+  markdown_for_agents: true
+  header: 'Accept: text/markdown'
+  note: >-
+    Apstal publishes an Agent Skill describing markdown content negotiation. Verified working
+    (responses return Content-Type: text/markdown) but coverage is partial - /pricing, /docs/api
+    and /docs/mcp return a 404 markdown stub.
+  source: https://apstal.com/.well-known/agent-skills/markdown-negotiation/SKILL.md
+streaming:
+  sse:
+    endpoint: POST /api/ai/semantic
+    content_type: text/event-stream
+    frames: 'data: {"type":"text-delta","delta":"..."} ... data: [DONE]'
+  websocket:
+    endpoint: wss://ws.apstal.com
+    see: asyncapi/apstal-realtime-events.yml
+batching:
+  endpoint: POST /api/v1/m
+  max_items: 100
+  client_flush_interval: 5s
+  over_limit_status: 413

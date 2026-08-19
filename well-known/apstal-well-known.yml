@@ -1,0 +1,66 @@
+generated: '2026-08-13'
+method: probed
+source: live GET probes of /.well-known/* on every Apstal host in apis.yml
+host: https://apstal.com
+notes: >-
+  Apstal serves a genuinely rich /.well-known surface for an early-stage company: OAuth 2.0
+  authorization-server metadata (RFC 8414), OAuth 2.0 protected-resource metadata (RFC 9728),
+  an MCP server card, an A2A agent card, and two provider-authored Agent Skills linked from the
+  authorization-server document. There is no security.txt, no OpenID Connect discovery document
+  and no api-catalog. Non-existent paths return the Next.js HTML error page, which is recorded
+  as a 404 miss and never treated as a document.
+documents:
+- path: /.well-known/oauth-authorization-server
+  status: 200
+  content_type: application/octet-stream
+  file: apstal-oauth-authorization-server.json
+  standard: RFC 8414
+- path: /.well-known/oauth-protected-resource
+  status: 200
+  content_type: application/octet-stream
+  file: apstal-oauth-protected-resource.json
+  standard: RFC 9728
+- path: /.well-known/mcp/server-card.json
+  status: 200
+  content_type: application/json
+  file: apstal-mcp-server-card.json
+  standard: MCP server card (vendor path)
+- path: /.well-known/agent-card.json
+  status: 200
+  content_type: application/json
+  file: ../a2a/apstal-agent-card.json
+  standard: A2A Agent Card (see a2a/apstal-a2a.yml for the conformance grade)
+- path: /.well-known/agent-skills/analytics-query/SKILL.md
+  status: 200
+  content_type: text/markdown
+  file: ../skills/apstal-analytics-query.md
+- path: /.well-known/agent-skills/markdown-negotiation/SKILL.md
+  status: 200
+  content_type: text/markdown
+  file: ../skills/apstal-markdown-negotiation.md
+- path: /.well-known/security.txt
+  status: 404
+- path: /.well-known/openid-configuration
+  status: 404
+- path: /.well-known/jwks.json
+  status: 404
+  note: >-
+    Advertised as jwks_uri by the authorization-server metadata but not served — a real defect
+    in the OAuth discovery chain, recorded rather than papered over.
+- path: /.well-known/api-catalog
+  status: 404
+- path: /.well-known/ai-plugin.json
+  status: 404
+- path: /.well-known/agent.json
+  status: 404
+other_hosts:
+- host: https://ws.apstal.com
+  note: >-
+    Answers every path with the same {"status":"ok","service":"apstal-ws"} health JSON, including
+    /.well-known/agent-card.json. Treated as a catch-all, not as a served document.
+- host: https://status.apstal.com
+  note: >-
+    Hosted status page; answers every /.well-known/* path with the status page HTML. Catch-all,
+    not a served document.
+- host: https://auth.apstal.com
+  note: 'Supabase GoTrue host; returns {"error":"requested path is invalid"} (404) for /.well-known/*.'

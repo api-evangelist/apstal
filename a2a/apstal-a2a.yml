@@ -1,0 +1,51 @@
+generated: '2026-08-13'
+method: probed
+source: https://apstal.com/.well-known/agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: apstal.com
+conformance:
+  spec: A2A 1.0.0
+  grade: flavored
+  protocol_version: null
+  preferred_transport: null
+  deviations:
+  - capabilities-not-object
+  - no-protocolVersion
+  - supportedInterfaces-instead-of-additionalInterfaces
+  - no-preferredTransport
+  - no-defaultInputModes
+  - no-defaultOutputModes
+  notes: >-
+    The card is a real, provider-served document at the canonical A2A path, but it fails two of
+    the three hard checks: `capabilities` is an ARRAY of feature strings rather than the A2A
+    capabilities OBJECT, and there is no `protocolVersion`. It also uses `supportedInterfaces`,
+    the pre-0.3 field name, instead of `additionalInterfaces`. `skills` IS a proper array of
+    objects with id/name/description, which is the strongest part of the card.
+card:
+  name: Apstal Analytics Agent
+  url: https://apstal.com
+  version: 1.0.0
+  skills: 4
+  skill_ids:
+  - query-analytics
+  - bot-detection
+  - behavioral-analysis
+  - performance-monitoring
+  interfaces:
+  - type: jsonrpc
+    url: https://apstal.com/api/ai/semantic
+    transport: https
+  file: apstal-agent-card.json
+related:
+  mcp: mcp/apstal-mcp.yml
+  note: >-
+    The agent card points at the JSON-RPC semantic-query endpoint (/api/ai/semantic), NOT at the
+    MCP server (/api/mcp). They are two different agent surfaces on the same host; both are real
+    and both are captured separately in this repo.
+x-evidence:
+  fetched: '2026-08-13'
+  url: https://apstal.com/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json; charset=UTF-8

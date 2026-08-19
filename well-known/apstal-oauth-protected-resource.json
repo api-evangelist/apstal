@@ -1,0 +1,6 @@
+{
+  "resource": "https://apstal.com/api",
+  "authorization_servers": ["https://apstal.com/.well-known/oauth-authorization-server"],
+  "scopes_supported": ["read", "write", "admin"],
+  "bearer_methods_supported": ["header"]
+}

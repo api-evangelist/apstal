@@ -1,0 +1,119 @@
+generated: '2026-08-13'
+method: probed
+status: published
+source: https://apstal.com/docs/mcp
+discovery: https://apstal.com/.well-known/mcp/server-card.json
+deployment:
+  mode: remote
+  endpoint: https://apstal.com/api/mcp
+  auth: api-key
+  verified: probed
+  note: >-
+    No npm/PyPI stdio package is published. The only way to reach Apstal over MCP is to POST to
+    the hosted HTTPS endpoint, which an agent can do today with a Bearer API key.
+server:
+  name: apstal-analytics
+  version: 1.0.0
+  transport: http
+  transport_detail: Streamable HTTP
+  url: https://apstal.com/api/mcp
+  protocol: JSON-RPC 2.0
+  mcp_protocol_version: '2025-06-18'
+  capabilities:
+    tools: true
+    tools_list_changed: false
+    resources: false
+    prompts: false
+authentication:
+  type: bearer
+  header: 'Authorization: Bearer apstal_<api_key>'
+  key_prefix: apstal_
+  issuance:
+  - Dashboard -> Settings -> MCP Server -> generate API key
+  - MCP `login` tool (email + password) returns an API key
+  anonymous_tools: [login, register, server_info]
+  note: >-
+    tools/list is answered ANONYMOUSLY and returns only the three public tools. The six
+    authenticated tools are documented but are not exposed to an unauthenticated tools/list,
+    so their inputSchemas require an authenticated introspection to capture.
+tools_probe:
+  method: POST tools/list (unauthenticated)
+  http_status: 200
+  file: apstal-tools-list.json
+  tools_returned: 3
+tools:
+- name: login
+  description: Sign in with email and password. Returns an API key to use as Bearer token for authenticated tools.
+  auth: none
+  input_schema: apstal-tools-list.json#/result/tools/0/inputSchema
+  source: probed tools/list
+- name: register
+  description: Create a new account with email and password. Optionally register a domain to track.
+  auth: none
+  input_schema: apstal-tools-list.json#/result/tools/1/inputSchema
+  source: probed tools/list
+- name: server_info
+  description: Get information about this MCP server, including available tools and authentication instructions.
+  auth: none
+  input_schema: apstal-tools-list.json#/result/tools/2/inputSchema
+  source: probed tools/list
+- name: execute_sql
+  description: >-
+    Run read-only BigQuery SQL against analytics events with automatic project_id filtering.
+    SELECT-only; project scoping is injected server-side if omitted.
+  auth: bearer
+  input_schema: null
+  source: https://apstal.com/.well-known/mcp/server-card.json (toolsDescription) + /docs/mcp
+  note: inputSchema not returned to an unauthenticated tools/list; needs authenticated introspection.
+- name: get_analytics
+  description: >-
+    Dashboard metrics - visitors, pageviews, bounce rate, top pages, sources, devices, countries,
+    web vitals, conversions. Documented argument - `range` (e.g. 7d).
+  auth: bearer
+  input_schema: null
+  source: https://apstal.com/.well-known/mcp/server-card.json (toolsDescription) + /docs/mcp
+  cost: 1 AI credit per call
+- name: list_projects
+  description: List tracked domains.
+  auth: bearer
+  input_schema: null
+  source: https://apstal.com/.well-known/mcp/server-card.json (toolsDescription)
+- name: register_domain
+  description: >-
+    Create a new project and get the tracking snippet. Documented arguments - `domain`, `name`.
+  auth: bearer
+  input_schema: null
+  source: https://apstal.com/.well-known/mcp/server-card.json (toolsDescription) + /docs/mcp
+- name: get_schema
+  description: BigQuery events table schema (60+ columns).
+  auth: bearer
+  input_schema: null
+  source: https://apstal.com/.well-known/mcp/server-card.json (toolsDescription)
+- name: generate_api_key
+  description: Create additional API keys.
+  auth: bearer
+  input_schema: null
+  source: https://apstal.com/.well-known/mcp/server-card.json (toolsDescription)
+clients_documented:
+- Claude Desktop
+- Cursor
+- VS Code (GitHub Copilot)
+- Codex
+- Antigravity
+limits:
+  note: >-
+    MCP calls draw on the same plan limits as the dashboard. get_analytics and query_analytics
+    each cost 1 AI credit; responses carry a `creditsRemaining` field and return an upgrade
+    error when exhausted. See rate-limits/apstal-rate-limits.yml.
+x-evidence:
+- url: https://apstal.com/api/mcp
+  method: POST initialize
+  http_status: 200
+  fetched: '2026-08-13'
+- url: https://apstal.com/api/mcp
+  method: POST tools/list
+  http_status: 200
+  fetched: '2026-08-13'
+- url: https://apstal.com/.well-known/mcp/server-card.json
+  http_status: 200
+  fetched: '2026-08-13'

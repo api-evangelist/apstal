@@ -1,0 +1,23 @@
+{
+  "issuer": "https://apstal.com",
+  "authorization_endpoint": "https://apstal.com/api/auth/callback",
+  "token_endpoint": "https://apstal.com/api/auth/token",
+  "jwks_uri": "https://apstal.com/.well-known/jwks.json",
+  "response_types_supported": ["code"],
+  "grant_types_supported": ["authorization_code", "refresh_token"],
+  "subject_types_supported": ["public"],
+  "id_token_signing_alg_values_supported": ["RS256"],
+  "scopes_supported": ["read", "write", "admin"],
+  "token_endpoint_auth_methods_supported": ["client_secret_basic", "client_secret_post"],
+  "agent_auth": {
+    "skill": "https://apstal.com/.well-known/agent-skills/analytics-query/SKILL.md",
+    "register_uri": "https://apstal.com/auth.md",
+    "methods": [
+      {
+        "type": "api_key",
+        "description": "Register an account and generate an API key from the dashboard settings",
+        "register_uri": "https://apstal.com/app/settings"
+      }
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+generated: '2026-08-13'
+method: searched
+source: https://registry.npmjs.org/@apstal/analytics
+searched_registries: [npm, PyPI, RubyGems, crates.io, Packagist, NuGet, Maven Central, pkg.go.dev, WordPress.org]
+note: >-
+  One first-party package exists. It is a browser TRACKER, not an API client - there is no
+  first-party SDK for the MCP server or for the documented REST endpoints in any language. The
+  API reference itself says only that "community-supported wrappers for Node.js, Python, and PHP
+  are available on the integrations page"; no such wrappers were found in any registry and the
+  integrations pages document script tags and CMS plugins, not client libraries.
+packages:
+- language: javascript
+  registry: npm
+  name: '@apstal/analytics'
+  url: https://www.npmjs.com/package/@apstal/analytics
+  install: npm install @apstal/analytics
+  official: true
+  kind: tracker
+  version: 1.0.5
+  published: '2026-06-27'
+  license: AGPL-3.0
+  repository: https://github.com/apstal/analytics
+  homepage: https://apstal.com
+  entrypoint: "initApstal('YOUR_PROJECT_ID')"
+  docs: https://apstal.com/docs/integrations/react
+  source: https://registry.npmjs.org/@apstal/analytics
+- language: javascript
+  registry: cdn
+  name: apstal tracking script
+  url: https://apstal.com/apstal
+  install: '<script defer src="https://apstal.com/apstal" data-project="YOUR_PROJECT_ID"></script>'
+  official: true
+  kind: tracker
+  version: null
+  published: null
+  note: >-
+    Unpinned CDN distribution - the snippet has no version segment and floats to whatever the
+    origin serves, so a consumer cannot tell which build they are running. No CDN metadata
+    endpoint exists for it (it is served from the provider's own origin, not npm/unpkg/jsDelivr).
+    The provider dates tracker changes only in prose - /docs/ai-agents says AI-agent detection
+    landed "from the tracker version released on 2026-08-07".
+  docs: https://apstal.com/docs/tracker
+absent:
+- registry: PyPI
+  query: apstal
+  http_status: 404
+- registry: WordPress.org plugin directory
+  query: apstal
+  http_status: 404
+  note: >-
+    api.wordpress.org/plugins/info/1.0/apstal.json returns "Plugin not found"; the
+    wordpress.org/plugins/apstal/ URL resolves to a search-results page, not a plugin listing.
+    Apstal's own WordPress doc recommends the third-party WPCode plugin or a manual header edit,
+    which confirms there is no first-party WordPress plugin in the directory despite the footer
+    "Install plugin Apstal for WordPress" call to action.
+- registry: RubyGems / crates.io / Packagist / NuGet / Maven Central / pkg.go.dev
+  note: No first-party Apstal package found.
+plugins:
+- platform: Framer
+  name: Apstal Analytics
+  distribution: Framer Marketplace
+  official: true
+  version: null
+  note: >-
+    Documented as an official Framer Marketplace plugin at
+    https://apstal.com/docs/integrations/framer. No marketplace listing URL is published in the
+    docs and no version metadata is available, so version is recorded null rather than guessed.
+- platform: Shopify
+  name: Apstal
+  distribution: Shopify App Store
+  official: true
+  version: null
+  note: >-
+    Referenced by the privacy policy ("For merchants using our Shopify app, billing is handled
+    directly through the Shopify Billing API") and by /docs/integrations/shopify. No listing URL
+    or version is published.
+repositories:
+- url: https://github.com/apstal/analytics
+  description: Official lightweight and cookieless tracking script for Apstal
+  last_push: '2026-08-06'
+  source: https://api.github.com/users/apstal/repos

@@ -1,0 +1,81 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/auth.md
+docs:
+- https://apstal.com/auth.md
+- https://apstal.com/docs/api
+- https://apstal.com/docs/mcp
+probed:
+- url: https://apstal.com/.well-known/oauth-authorization-server
+  http_status: 200
+- url: https://apstal.com/.well-known/oauth-protected-resource
+  http_status: 200
+note: >-
+  Apstal publishes no OpenAPI, so this profile is not derived from securitySchemes. It is read
+  from the provider's own agent-facing auth.md, its API reference, and its live RFC 8414 /
+  RFC 9728 discovery documents. Identity is Supabase Auth (GoTrue).
+summary:
+  types: [apiKey, http, oauth2]
+  api_key_in: [header]
+  api_key_prefix: apstal_
+  oauth2_flows: [authorizationCode, refreshToken]
+  identity_provider: Supabase Auth (GoTrue)
+schemes:
+- name: apiKeyBearer
+  type: apiKey
+  in: header
+  parameter: Authorization
+  format: 'Bearer apstal_<key>'
+  issuance: Dashboard -> Settings -> API Keys (also Settings -> MCP Server for the MCP key)
+  programmatic_issuance:
+  - 'MCP tool: login (email + password) returns an API key'
+  - 'MCP tool: generate_api_key (authenticated) mints additional keys'
+  applies_to:
+  - https://apstal.com/api/mcp
+  - https://apstal.com/api/analytics/*
+  - https://apstal.com/api/ai/semantic
+  sources: [https://apstal.com/auth.md, https://apstal.com/docs/api, https://apstal.com/docs/mcp]
+- name: supabaseSession
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: >-
+    Supabase session JWT, used by the dashboard and named by the published analytics-query
+    Agent Skill as the credential for POST /api/ai/semantic.
+  sources: [https://apstal.com/.well-known/agent-skills/analytics-query/SKILL.md, https://apstal.com/docs/api]
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://apstal.com/api/auth/callback
+    tokenUrl: https://apstal.com/api/auth/token
+    scopes: [read, write, admin]
+  - flow: refreshToken
+  token_endpoint_auth_methods_supported: [client_secret_basic, client_secret_post]
+  id_token_signing_alg_values_supported: [RS256]
+  jwks_uri: https://apstal.com/.well-known/jwks.json
+  jwks_status: 404
+  jwks_note: >-
+    The authorization-server metadata advertises a jwks_uri that returns 404. Token signature
+    verification cannot be completed from published material.
+  sources: [https://apstal.com/.well-known/oauth-authorization-server, https://apstal.com/auth.md]
+protected_resource:
+  resource: https://apstal.com/api
+  authorization_servers: [https://apstal.com/.well-known/oauth-authorization-server]
+  scopes_supported: [read, write, admin]
+  bearer_methods_supported: [header]
+  source: https://apstal.com/.well-known/oauth-protected-resource
+project_scoping:
+  note: >-
+    Every read is additionally scoped by Project ID. Write endpoints (/api/v1/m, /api/v1/stream)
+    take projectId in the body rather than a credential; the ingestion layer enforces a locked
+    tracker domain and rejects payloads from unauthorized origins with HTTP 403.
+  source: https://apstal.com/docs/privacy
+agent_auth:
+  register_uri: https://apstal.com/auth.md
+  signup: https://apstal.com/app/settings
+  methods:
+  - type: api_key
+    description: Register an account and generate an API key from the dashboard settings
+  skill: https://apstal.com/.well-known/agent-skills/analytics-query/SKILL.md
+  source: https://apstal.com/.well-known/oauth-authorization-server

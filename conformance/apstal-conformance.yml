@@ -1,0 +1,119 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/docs/mcp
+note: >-
+  Apstal has no OpenAPI to derive from. Every entry below is either a live probe of a published
+  discovery document or an explicit claim on a published page.
+standards:
+- id: mcp-2025-06-18
+  name: Model Context Protocol
+  conforms: true
+  evidence: >-
+    POST https://apstal.com/api/mcp initialize returned 200 with
+    protocolVersion "2025-06-18" and serverInfo apstal-analytics/1.0.0; tools/list returned 200
+    with three tools carrying real inputSchemas.
+  method: probed
+- id: jsonrpc-2.0
+  conforms: true
+  evidence: MCP responses carry "jsonrpc":"2.0"; the API reference documents JSON-RPC 2.0 over Streamable HTTP.
+  method: probed
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: partial
+  evidence: >-
+    https://apstal.com/.well-known/oauth-authorization-server returns 200 with issuer,
+    authorization_endpoint, token_endpoint, jwks_uri, response_types_supported,
+    grant_types_supported, scopes_supported. Partial because the advertised jwks_uri
+    (https://apstal.com/.well-known/jwks.json) returns 404, and the document is served as
+    application/octet-stream rather than application/json.
+  method: probed
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: partial
+  evidence: >-
+    https://apstal.com/.well-known/oauth-protected-resource returns 200 with resource,
+    authorization_servers, scopes_supported, bearer_methods_supported. Partial - the
+    authorization_servers array points at the METADATA URL rather than at the issuer identifier,
+    which is what RFC 9728 expects.
+  method: probed
+- id: a2a-1.0.0
+  name: A2A Agent Card
+  conforms: false
+  grade: flavored
+  evidence: >-
+    A card IS served at the canonical /.well-known/agent-card.json (HTTP 200), but `capabilities`
+    is an array rather than an object and there is no `protocolVersion`. See a2a/apstal-a2a.yml.
+  method: probed
+- id: oauth2
+  conforms: true
+  evidence: authorizationCode + refreshToken grants published in the authorization-server metadata and auth.md.
+  method: probed
+- id: openid-connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404. The metadata declares id_token signing algs but no OIDC discovery document is served.
+  method: probed
+- id: llms-txt
+  conforms: true
+  evidence: https://apstal.com/llms.txt returns 200 text/plain in llms.txt format.
+  method: probed
+- id: agent-skills
+  conforms: true
+  evidence: >-
+    Two provider-authored SKILL.md documents served under /.well-known/agent-skills/ and linked
+    from the authorization-server metadata and auth.md.
+  method: probed
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404.
+  method: probed
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: The API reference publishes a bare status-code table; no application/problem+json.
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI/Swagger document found. Probed /openapi.json, /openapi.yaml, /swagger.json,
+    /api/openapi.json, /api/v1/openapi.json, /api/swagger.json, /api-docs, /api/docs, /redoc on
+    apstal.com and ws.apstal.com - all 404 or catch-all.
+  method: probed
+- id: asyncapi
+  conforms: false
+  evidence: No AsyncAPI document found; /asyncapi.yaml 404. The WebSocket surface is prose-documented only.
+  method: probed
+- id: graphql
+  conforms: false
+  evidence: /graphql returns 404.
+  method: probed
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No deprecation policy or Sunset/Deprecation header support published.
+compliance:
+- id: gdpr
+  conforms: true
+  claimed: true
+  evidence: >-
+    A Data Processing Agreement is published at https://apstal.com/dpa (updated 2026-07-09)
+    naming Apstal as processor and the client as controller, with categories of data, security
+    measures, sub-processor commitments, 30-day sub-processor change notice for Enterprise,
+    data-subject-rights assistance and a 72-hour breach-notification undertaking. The privacy
+    policy states operations are based in Poland and subject to the GDPR.
+  url: https://apstal.com/dpa
+- id: soc2
+  conforms: false
+  evidence: No SOC 2 claim found; no trust centre published (trust./security. subdomains and /trust, /security probed - no hit).
+- id: iso27001
+  conforms: false
+  evidence: No ISO 27001 claim found.
+- id: pci-dss
+  conforms: false
+  evidence: >-
+    Not applicable in Apstal's own right - the privacy policy states card data is handled by
+    Paddle as merchant of record (Shopify Billing API for the Shopify app) and that "Apstal does
+    not store, process, or have access to your credit card data."
+technical_controls_published:
+- Encryption in transit and at rest (DPA section 5)
+- Access controls and authentication mechanisms (DPA section 5)
+- Logical separation of client data (DPA section 5)
+- Strict origin checking - payloads from unauthorized domains rejected with HTTP 403
+- Client-side PII/password/form-input masking before transmission (session replay)
+- IP addresses processed transiently for geo/network classification, raw IP never stored
+- Cookieless by design; first-party LocalStorage/SessionStorage only
+- HSTS enabled with max-age 31536000; TLS 1.3; CAA records published (see security/apstal-domain-security.yml)

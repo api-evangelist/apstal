@@ -1,0 +1,78 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/docs/api
+docs:
+- https://apstal.com/docs/api
+- https://apstal.com/docs/mcp
+- https://apstal.com/pricing
+limit_count: 5
+response_headers:
+  published: []
+  note: >-
+    THIS IS THE GAP. Apstal documents a 429 ("Rate limit exceeded. Retry after the specified
+    delay.") but names no response header - no RateLimit-*, no X-RateLimit-*, no Retry-After. An
+    agent cannot read remaining budget or a retry delay from an HTTP response; it can only see
+    the status code. The one machine-readable budget signal Apstal does publish is in-band and
+    MCP-only (the `creditsRemaining` field on tool responses).
+status_on_exhaustion: 429
+limits:
+- scope: per-request
+  endpoint: POST /api/v1/m
+  limit: 100
+  unit: events per request
+  window: per request
+  on_exceed_status: 413
+  on_exceed: Payload too large
+  source: https://apstal.com/docs/api
+- scope: per-client
+  endpoint: POST /api/v1/m
+  limit: null
+  unit: batch flush
+  window: 5 seconds
+  note: >-
+    The browser tracker batches events and flushes every 5 seconds by default. This is a client
+    behaviour documented as the throttling mechanism, not a server-enforced limit.
+  source: https://apstal.com/docs/api
+- scope: per-account
+  surface: AI chat + MCP get_analytics / query_analytics
+  limit: 50
+  unit: AI credits
+  window: day
+  plan: Basic / Free
+  source: https://apstal.com/docs/mcp, https://apstal.com/pricing
+- scope: per-account
+  surface: AI chat + MCP get_analytics / query_analytics
+  limit: 500
+  unit: AI credits
+  window: day
+  plan: Premium
+  source: https://apstal.com/docs/mcp, https://apstal.com/pricing
+- scope: per-account
+  surface: AI chat + MCP get_analytics / query_analytics
+  limit: 5000
+  unit: AI credits
+  window: day
+  plan: Enterprise / Max
+  note: /docs/mcp additionally states Enterprise users bypass credit limits entirely.
+  source: https://apstal.com/docs/mcp, https://apstal.com/pricing
+quotas:
+- scope: per-account
+  limit: 100000
+  unit: events
+  window: month
+  plan: Basic / Free
+- scope: per-account
+  limit: 450000
+  unit: events
+  window: month
+  plan: Premium
+- scope: per-account
+  limit: 450000-10000000
+  unit: events
+  window: month
+  plan: Enterprise / Max
+in_band_signal:
+  field: creditsRemaining
+  surface: MCP tool responses
+  note: On exhaustion, MCP tool calls return an error carrying an upgrade link.
+  source: https://apstal.com/docs/mcp

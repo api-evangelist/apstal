@@ -1,0 +1,35 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/.well-known/oauth-authorization-server (agent_auth.skill) and https://apstal.com/auth.md
+note: >-
+  These are the provider's OWN Agent Skills, served from apstal.com under
+  /.well-known/agent-skills/<id>/SKILL.md and saved here VERBATIM. They are not authored by
+  API Evangelist and carry no added frontmatter. Apstal advertises them from two places: the
+  `agent_auth.skill` field of its OAuth authorization-server metadata, and its agent-facing
+  auth.md.
+skills:
+- file: apstal-analytics-query.md
+  id: analytics-query
+  name: Analytics Query
+  source: https://apstal.com/.well-known/agent-skills/analytics-query/SKILL.md
+  http_status: 200
+  api: https://apstal.com/api/ai/semantic
+  method: POST
+  auth: Supabase JWT bearer token
+  summary: >-
+    Query Apstal analytics through the semantic API endpoint using natural language. The request
+    body carries `messages[]` and `projectId`; a Cube Core semantic layer translates the question
+    into a structured analytics query.
+- file: apstal-markdown-negotiation.md
+  id: markdown-negotiation
+  name: Markdown Negotiation
+  source: https://apstal.com/.well-known/agent-skills/markdown-negotiation/SKILL.md
+  http_status: 200
+  auth: none
+  summary: >-
+    Content negotiation for agents - send `Accept: text/markdown` and the server returns a
+    markdown representation of the page instead of HTML.
+  verified: >-
+    Probed 2026-08-13. The mechanism works (responses return Content-Type text/markdown), but
+    coverage is partial - /pricing, /docs/api and /docs/mcp each returned a 404 markdown stub
+    reading "Content not available in markdown format."

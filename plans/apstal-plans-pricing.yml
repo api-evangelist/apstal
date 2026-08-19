@@ -1,0 +1,90 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/pricing
+currency: USD
+billing_periods: [monthly, yearly]
+yearly_discount: 20%
+plan_count: 3
+note: >-
+  The pricing page shows three purchasable cards (Basic / Premium / Max) and a separate
+  side-by-side comparison table whose columns are labelled Free / Premium / Enterprise. The two
+  namings are the provider's own and are recorded as published rather than reconciled. Payments
+  are taken by Paddle as merchant of record (Shopify Billing API for the Shopify app).
+plans:
+- name: Basic
+  comparison_column: Free
+  price: 0
+  currency: USD
+  period: month
+  cta: Start Free
+  credit_card_required: false
+  summary: AI agent, replays, and funnels. Genuinely free.
+  limits:
+    events_per_month: 100000
+    websites: 1
+    ai_chat_queries_per_day: 50
+    mcp_daily_credits: 50
+    max_projects: 1
+    session_replay: true
+    replay_retention: 42 hours
+    heatmaps: false
+    data_retention: 6 months
+    support: Community & email
+- name: Premium
+  comparison_column: Premium
+  price: 48
+  currency: USD
+  period: month
+  summary: See heatmaps, hear voice AI, find what frustrates users.
+  limits:
+    events_per_month: 450000
+    websites: 5
+    ai_chat_queries_per_day: 500
+    mcp_daily_credits: 500
+    max_projects: multiple
+    session_replay: true
+    replay_retention: 30 days
+    heatmaps: true
+    data_retention: 12 months
+    support: Priority (24h)
+- name: Max
+  comparison_column: Enterprise
+  price: 90
+  list_price: 150
+  currency: USD
+  period: month
+  summary: Revenue tracking, BYOK, and AI that lifts conversions.
+  limits:
+    events_per_month: 450000-10000000
+    websites: 20+
+    ai_chat_queries_per_day: 5000
+    mcp_daily_credits: 5000
+    max_projects: unlimited
+    session_replay: true
+    replay_retention: 30 days
+    heatmaps: true
+    data_retention: custom
+    support: Priority direct
+  features_exclusive:
+  - Extension personas
+  - Demographics prediction
+  - 3D visitor globe
+  - Revenue detectors (Shopify / WooCommerce / GTM)
+  - Bring Your Own API Key (BYOK)
+  note: >-
+    /docs/mcp states Enterprise users bypass credit limits entirely; the pricing comparison table
+    lists 5,000 AI chat queries per day for the same column.
+metering:
+  unit: event
+  ai_unit: AI credit
+  ai_note: >-
+    Each get_analytics / query_analytics call costs 1 AI credit, drawn from the same daily budget
+    as dashboard AI chat. Tool responses carry a `creditsRemaining` field.
+  source: https://apstal.com/docs/mcp
+overage:
+  published: false
+  note: No overage pricing is published; the comparison table shows caps, not per-unit overage rates.
+api_access:
+  note: >-
+    The MCP server and REST endpoints are available on every plan including the free tier - MCP
+    is metered by the same AI credit budget rather than gated behind a paid tier.

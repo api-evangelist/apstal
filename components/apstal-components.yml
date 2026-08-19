@@ -1,0 +1,88 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/docs/tracker
+docs:
+- https://apstal.com/docs/tracker
+- https://apstal.com/docs/quickstart
+- https://apstal.com/docs/integrations/framer
+- https://apstal.com/docs/integrations/react
+note: >-
+  Apstal's client-side surface is a tracking script plus platform plugins, not a component
+  library. Recorded here because it is the only embeddable/client-side distribution the provider
+  ships, and it is distinct from the (non-existent) server-side SDKs in packages/.
+families:
+- name: Tracker
+  description: >-
+    The Apstal tracking snippet - asynchronous, deferred, under 5KB compressed, cookieless. It
+    posts JSON batches to /api/v1/m, opens a WebSocket to wss://ws.apstal.com, uploads rrweb
+    session-replay chunks to /api/v1/stream, auto-observes DOM mutations for click/interaction
+    capture, and runs client-side heuristics to drop headless browsers and crawlers.
+  loaders:
+  - kind: script-tag
+    snippet: '<script defer src="https://apstal.com/apstal" data-project="YOUR_PROJECT_ID"></script>'
+  - kind: npm
+    package: '@apstal/analytics'
+    init: "initApstal('YOUR_PROJECT_ID')"
+  config_attributes:
+  - data-project
+  source: https://apstal.com/docs/tracker
+- name: Visitor widget
+  description: On-site visitor widget, listed in the site footer under Product.
+  url: https://apstal.com/widget
+  detail_published: false
+  note: Marketing page only; no embed API or configuration reference is published.
+- name: Platform plugins
+  description: >-
+    First-party plugins that take a Project ID instead of a script tag. Native plugins and
+    automatic platform detection exist for Shopify, WordPress and Framer.
+  plugins:
+  - platform: Framer
+    distribution: Framer Marketplace
+    note: >-
+      Drag the component onto the site and paste the Project ID into the plugin settings panel.
+      Works on all Framer plans (no premium plan needed for custom head code).
+  - platform: Shopify
+    distribution: Shopify App Store
+    note: Billing handled through the Shopify Billing API.
+  - platform: WordPress
+    distribution: none
+    note: >-
+      No first-party plugin is published in the WordPress.org directory. The official doc
+      recommends the third-party WPCode plugin or a manual header.php edit.
+  source: https://apstal.com/docs/quickstart
+integration_guides:
+  count: 30
+  index: https://apstal.com/docs/integrations/shopify
+  platforms:
+  - shopify
+  - wordpress
+  - woocommerce
+  - framer
+  - react
+  - nextjs
+  - nuxt
+  - angular
+  - vue
+  - svelte
+  - astro
+  - gatsby
+  - laravel
+  - hugo
+  - jekyll
+  - docusaurus
+  - vitepress
+  - gitbook
+  - ghost
+  - squarespace
+  - carrd
+  - bubble
+  - bigcommerce
+  - prestashop
+  - joomla
+  - drupal
+  - tilda
+  - gtm
+  - strapi
+  note: >-
+    Each guide is a copy-paste snippet placement walkthrough, not a component API. Counted here
+    because integration breadth is the provider's main distribution mechanism.

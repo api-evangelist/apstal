@@ -1,0 +1,115 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/docs/mcp
+note: >-
+  There is no OpenAPI to derive an entity graph from. Apstal's data model is a single wide
+  analytics events table queried with read-only SQL through the MCP `execute_sql` tool; the
+  documentation names the key columns and says the full schema is 60+ columns, retrievable at
+  runtime with the `get_schema` tool. Only the columns the provider actually names are listed
+  below - the remaining columns are recorded as unknown rather than invented.
+entities:
+- name: events
+  kind: table
+  store: BigQuery
+  description: >-
+    One row per tracked interaction. Every query is automatically scoped to the caller's
+    project_id, filtered to exclude bot traffic, and restricted to SELECT.
+  primary_scope: project_id
+  columns_documented:
+  - name: event_type
+    type: string
+    values: [pageview, click, scroll, exit, purchase, rage_click]
+    note: The docs list these with "etc." - the enumeration is not exhaustive.
+  - name: visitor_id
+    type: string
+    role: groups sessions to an anonymous visitor
+  - name: session_id
+    type: string
+    role: groups events into a session; used for user-path analysis
+  - name: page_url
+    type: string
+  - name: page_path
+    type: string
+  - name: page_title
+    type: string
+  - name: country
+    type: string
+  - name: city
+    type: string
+  - name: device_type
+    type: string
+  - name: browser
+    type: string
+  - name: os
+    type: string
+  - name: fcp
+    type: number
+    role: Core Web Vitals - First Contentful Paint
+  - name: lcp
+    type: number
+    role: Core Web Vitals - Largest Contentful Paint
+  - name: cls
+    type: number
+    role: Core Web Vitals - Cumulative Layout Shift
+  - name: ttfb
+    type: number
+    role: Core Web Vitals - Time To First Byte
+  - name: utm_source
+    type: string
+  - name: utm_medium
+    type: string
+  - name: utm_campaign
+    type: string
+  - name: amount
+    type: number
+    role: ecommerce revenue
+  - name: currency
+    type: string
+  - name: metadata
+    type: json
+    access: JSON_EXTRACT_SCALAR
+    role: additional per-event fields
+  columns_total: 60+
+  columns_undocumented: true
+  runtime_schema_tool: get_schema
+relationships:
+- from: project
+  to: events
+  kind: has_many
+  via: project_id
+- from: visitor
+  to: session
+  kind: has_many
+  via: visitor_id
+- from: session
+  to: events
+  kind: has_many
+  via: session_id
+concepts:
+- name: project
+  description: >-
+    A tracked domain. Created via the MCP `register_domain` tool or the dashboard; identified by
+    a UUID Project ID that is embedded in the tracking snippet as data-project.
+  id_shape: UUID
+  source: https://apstal.com/docs/mcp
+- name: session replay
+  description: >-
+    rrweb-format chunks uploaded to POST /api/v1/stream and stored at
+    session-replays/<projectId>/<sessionId>/chunk_<n>.json.gz. Retained 30 days by default,
+    then deleted by a cleanup job.
+  source: https://apstal.com/docs/api
+- name: ai_agent tag
+  description: >-
+    Sessions produced by agentic browsers are tagged ai_agent with the agent name. Available
+    from the tracker version released 2026-08-07; earlier sessions carry no tag.
+  detected_agents: [ChatGPT Atlas, Perplexity Comet, Claude agent, Manus, Cursor, Browser Use, Skyvern, Arc, Fellou, Genspark, Sigma]
+  source: https://apstal.com/docs/ai-agents
+access_rules:
+- SELECT only; no DML is accepted by execute_sql.
+- project_id is injected server-side when the caller omits it.
+- Bot traffic is filtered out of query results by default.
+- A date filter is applied by the server.
+source_note: >-
+  The SQL-safety bullets on /docs/mcp render as untranslated i18n keys
+  (DocsMcp.sqlSafety.selectOnly, .isolation, .botFilter, .dateFilter), so the four rules above
+  are read from their key names plus the surrounding prose rather than from published sentences.

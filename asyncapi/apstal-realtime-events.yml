@@ -1,0 +1,55 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/docs/api
+spec_type: none
+spec_note: >-
+  NO AsyncAPI document is published. /asyncapi.yaml and ws.apstal.com/asyncapi.json were probed
+  and miss (ws.apstal.com answers every path with the same health JSON). NO webhooks are
+  published either - Apstal advertises no outbound HTTP callbacks anywhere in its documentation.
+  What DOES exist is a real, prose-documented WebSocket surface plus a server-sent-events
+  response, captured below so the event surface is recorded rather than lost. This file
+  deliberately carries no AsyncAPI or Webhooks pointer in apis.yml, because neither is true.
+surfaces:
+- kind: websocket
+  endpoint: wss://ws.apstal.com
+  health_endpoint: https://ws.apstal.com/
+  health_probe:
+    http_status: 200
+    body: '{"status":"ok","service":"apstal-ws","connections":0}'
+    fetched: '2026-08-13'
+  direction: bidirectional
+  auth: token in the connection message (dashboard connections only)
+  connection_types:
+  - type: tracker
+    direction: client -> server
+    sent_by: the browser tracking script
+    payload_fields: [type, projectId, events]
+    example: '{"type":"tracker","projectId":"abc123","events":[...]}'
+  - type: dashboard
+    direction: bidirectional
+    sent_by: the Apstal dashboard
+    payload_fields: [type, projectId, token]
+    example: '{"type":"dashboard","projectId":"abc123","token":"YOUR_AUTH_TOKEN"}'
+    server_push: >-
+      Dashboard clients receive real-time push updates when new events arrive for their project.
+      The server filters by Project ID and sends only relevant data.
+  - type: viewer
+    direction: bidirectional
+    sent_by: the session-replay viewer
+    payload_fields: [type, projectId, sessionId]
+    example: '{"type":"viewer","projectId":"abc123","sessionId":"sess_xyz789"}'
+  message_schemas_published: false
+  bindings_published: false
+- kind: server-sent-events
+  endpoint: POST https://apstal.com/api/ai/semantic
+  content_type: text/event-stream
+  frames:
+  - 'data: {"type":"text-delta","delta":"..."}'
+  - 'data: [DONE]'
+  auth: 'Authorization: Bearer <api key or Supabase JWT>'
+  source: https://apstal.com/docs/api
+gaps:
+- No AsyncAPI document.
+- No webhooks / outbound callbacks of any kind.
+- No message schemas or channel definitions beyond the three example payloads above.
+- No documented reconnect, heartbeat, or error semantics for the WebSocket.

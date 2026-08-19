@@ -1,0 +1,127 @@
+generated: '2026-08-13'
+method: derived
+source: mcp/apstal-mcp.yml + https://apstal.com/docs/api
+note: >-
+  Apstal publishes NO OpenAPI, so there are no operationIds to bind to. The `rest:` column below
+  therefore carries documented METHOD + PATH from the API reference instead of an operationId,
+  and every row says so. Nothing here is invented: a tool is only bound to a REST endpoint when
+  the two are documented to do the same thing on the same host. Where no public REST endpoint
+  exists, the tool is listed in mcp_only[] rather than given a guessed binding.
+surfaces:
+  openapi: null
+  openapi_note: >-
+    Probed /openapi.json, /openapi.yaml, /swagger.json, /api/openapi.json, /api/v1/openapi.json,
+    /api/swagger.json, /api-docs, /api/docs, /redoc on apstal.com and ws.apstal.com. All miss.
+  rest_reference: https://apstal.com/docs/api
+  rest_base: https://apstal.com/api
+  graphql: null
+  mcp:
+    url: https://apstal.com/api/mcp
+    tools_list: open
+    tools_list_note: >-
+      tools/list answers anonymously but returns ONLY the three public tools. The six
+      authenticated tools are documented but their inputSchemas are gated behind a Bearer key.
+  a2a_semantic:
+    url: https://apstal.com/api/ai/semantic
+    note: JSON-RPC/SSE endpoint named by the A2A agent card and by the published analytics-query Agent Skill.
+crosswalk:
+- tool: get_analytics
+  category: analytics-read
+  rest: ['GET /api/analytics/quick']
+  binding: rest
+  confidence: high
+  note: >-
+    Both are documented as the dashboard-metrics surface (visitors, pageviews, bounce rate, top
+    pages, sources, countries). The tool takes `range`; the REST endpoint takes
+    projectId + period/start/end. Binding by documented semantics, not by an operationId.
+- tool: execute_sql
+  category: analytics-query
+  rest: []
+  binding: mcp-only
+  confidence: high
+  note: >-
+    No public REST endpoint exposes read-only BigQuery SQL. The nearest public relative is
+    POST /api/ai/semantic, which takes natural language rather than SQL and runs through the
+    Cube Core semantic layer - a different contract, so it is not bound here.
+- tool: register_domain
+  category: project-management
+  rest: []
+  binding: mcp-only
+  confidence: high
+  note: No public REST project-creation endpoint is documented.
+- tool: list_projects
+  category: project-management
+  rest: []
+  binding: mcp-only
+  confidence: high
+- tool: get_schema
+  category: metadata
+  rest: []
+  binding: mcp-only
+  confidence: high
+- tool: generate_api_key
+  category: credentials
+  rest: []
+  binding: mcp-only
+  confidence: high
+  note: Key issuance is otherwise a dashboard-only action (Settings -> API Keys).
+- tool: login
+  category: auth
+  rest: ['POST /api/auth/token']
+  binding: rest
+  confidence: low
+  note: >-
+    Both mint a credential, but they are different grants - the tool takes email + password and
+    returns an apstal_ API key, while the OAuth token endpoint implements
+    authorization_code / refresh_token. Recorded as a low-confidence semantic neighbour, not an
+    equivalence.
+- tool: register
+  category: auth
+  rest: []
+  binding: mcp-only
+  confidence: high
+  note: Account creation is otherwise done through the web signup flow.
+- tool: server_info
+  category: metadata
+  rest: ['GET /.well-known/mcp/server-card.json']
+  binding: rest
+  confidence: medium
+  note: >-
+    Not a REST API operation - it is the published MCP server card, which carries the same
+    server metadata, transport, auth instructions and tool list the tool returns.
+mcp_only:
+- tool: execute_sql
+  reason: Read-only BigQuery SQL over the analytics events table; no public REST equivalent.
+- tool: register_domain
+  reason: Project creation is not exposed over public REST.
+- tool: list_projects
+  reason: Project listing is not exposed over public REST.
+- tool: get_schema
+  reason: Events-table schema introspection is not exposed over public REST.
+- tool: generate_api_key
+  reason: Key issuance is dashboard-only outside MCP.
+- tool: register
+  reason: Account creation is not exposed over public REST.
+rest_only:
+- capability: event ingestion
+  endpoints: ['POST /api/v1/m']
+  reason: No MCP tool writes events; the tracker is the only documented producer.
+- capability: session replay upload
+  endpoints: ['POST /api/v1/stream']
+  reason: No MCP tool uploads replay chunks.
+- capability: natural-language analytics query
+  endpoints: ['POST /api/ai/semantic']
+  reason: >-
+    Exposed to agents through the A2A agent card and the published analytics-query Agent Skill
+    rather than through an MCP tool. A real three-way surface divergence - MCP has SQL, the A2A
+    interface has natural language, and neither is a superset of the other.
+- capability: real-time event stream
+  endpoints: ['wss://ws.apstal.com']
+  reason: WebSocket surface with no MCP tool equivalent. See asyncapi/apstal-realtime-events.yml.
+coverage:
+  tools_named: 9
+  tools_with_live_input_schema: 3
+  tools_bound_to_rest: 3
+  mcp_only: 6
+  rest_capabilities_total: 6
+  rest_capabilities_with_a_tool: 2

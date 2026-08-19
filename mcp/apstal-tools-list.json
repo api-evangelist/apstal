@@ -1,0 +1,66 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "tools": [
+      {
+        "name": "login",
+        "description": "Sign in with email and password. Returns an API key to use as Bearer token for authenticated tools.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "Your account email address"
+            },
+            "password": {
+              "type": "string",
+              "description": "Your account password"
+            }
+          },
+          "required": [
+            "email",
+            "password"
+          ]
+        }
+      },
+      {
+        "name": "register",
+        "description": "Create a new account with email and password. Optionally register a domain to track.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "Email address for the new account"
+            },
+            "password": {
+              "type": "string",
+              "description": "Password for the new account"
+            },
+            "domain": {
+              "type": "string",
+              "description": "Optional domain to track (e.g. example.com)"
+            },
+            "name": {
+              "type": "string",
+              "description": "Optional name for the project"
+            }
+          },
+          "required": [
+            "email",
+            "password"
+          ]
+        }
+      },
+      {
+        "name": "server_info",
+        "description": "Get information about this MCP server, including available tools and authentication instructions.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    ]
+  }
+}

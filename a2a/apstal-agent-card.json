@@ -1,0 +1,20 @@
+{
+  "name": "Apstal Analytics Agent",
+  "version": "1.0.0",
+  "description": "AI-powered web analytics platform that provides privacy-first visitor tracking, behavioral analysis, bot detection, and natural language analytics queries.",
+  "url": "https://apstal.com",
+  "supportedInterfaces": [
+    {
+      "type": "jsonrpc",
+      "url": "https://apstal.com/api/ai/semantic",
+      "transport": "https"
+    }
+  ],
+  "capabilities": ["analytics", "bot_detection", "session_replay", "behavioral_analysis", "device_fingerprinting", "performance_monitoring"],
+  "skills": [
+    {"id": "query-analytics", "name": "Query Analytics", "description": "Ask natural language questions about website traffic, visitors, and behavior"},
+    {"id": "bot-detection", "name": "Bot Detection", "description": "Identify and filter automated traffic using 5-layer detection including fingerprint analysis"},
+    {"id": "behavioral-analysis", "name": "Behavioral Analysis", "description": "Analyze visitor behavior patterns including keystroke dynamics, touch patterns, and form interactions"},
+    {"id": "performance-monitoring", "name": "Performance Monitoring", "description": "Monitor Core Web Vitals and page performance metrics"}
+  ]
+}

@@ -1,0 +1,15 @@
+# Apstal
+
+> AI-first website analytics and visitor tracking platform. Replaces traditional dashboards with a natural language chatbot interface.
+
+## Core Features
+
+- **Analytics Chatbot**: Ask questions about traffic, drop-offs, conversions, and get instant answers in natural language.
+- **Session Replays & UX Insights**: Visual session recording, heatmaps, rage clicks, and user path analysis.
+- **Privacy-First & Lightweight**: Minimal latency tracking script, GDPR compliant.
+
+## Product Links
+- **Homepage**: https://apstal.com
+- **Analytics Chatbot**: https://apstal.com/app
+- **Blog**: https://apstal.com/blog
+- **Pricing & Plans**: https://apstal.com/pricing

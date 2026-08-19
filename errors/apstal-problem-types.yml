@@ -1,0 +1,63 @@
+generated: '2026-08-13'
+method: searched
+source: https://apstal.com/docs/api
+format: bare-status
+format_note: >-
+  Apstal does not use RFC 9457 application/problem+json. The API reference publishes a plain
+  status-code table and the documented success envelope is a bare JSON object
+  ({"ok": true, ...}). No machine-readable error `type` URIs, no error codes, and no documented
+  error body shape are published, so an agent can only branch on the HTTP status.
+envelope:
+  success: '{"ok": true, ...}'
+  error: undocumented
+problems:
+- status: 400
+  title: Bad request
+  detail: Malformed JSON or missing required fields.
+  source: https://apstal.com/docs/api
+- status: 401
+  title: Unauthorized
+  detail: Missing or invalid authentication.
+  remediation: >-
+    Supply Authorization: Bearer apstal_<key>, or obtain a key via the MCP `login` tool or the
+    dashboard Settings -> API Keys page.
+  source: https://apstal.com/docs/api
+- status: 403
+  title: Forbidden
+  detail: Authenticated but not authorized for this project.
+  also_returned_by: >-
+    The ingestion layer returns 403 for events posted from a domain other than the project's
+    locked tracker domain (strict origin checking).
+  source: https://apstal.com/docs/api, https://apstal.com/docs/privacy
+- status: 413
+  title: Payload too large
+  detail: Maximum 100 events per batch on POST /api/v1/m.
+  remediation: Split the batch into chunks of 100 events or fewer.
+  source: https://apstal.com/docs/api
+- status: 429
+  title: Rate limit exceeded
+  detail: Retry after the specified delay.
+  remediation: >-
+    Honor the retry delay. Apstal does not publish the name of the retry header, so a client
+    must fall back to exponential backoff.
+  source: https://apstal.com/docs/api
+- status: 500
+  title: Internal server error
+  detail: Error logged. Try again.
+  source: https://apstal.com/docs/api
+- status: 405
+  title: Method not allowed
+  detail: 'Observed on GET https://apstal.com/api/mcp: {"error":"Method not allowed. Use POST for MCP requests."}'
+  method: probed
+  http_status: 405
+  source: https://apstal.com/api/mcp
+mcp_errors:
+  note: >-
+    MCP tool calls return an error with an upgrade link when the account's daily AI credits are
+    exhausted; responses carry a `creditsRemaining` field. The JSON-RPC error codes themselves
+    are not published.
+  source: https://apstal.com/docs/mcp
+gaps:
+- No error catalog, error codes, or error-body schema is published.
+- No RFC 9457 problem+json.
+- No documented Retry-After / RateLimit response headers to accompany the 429.
