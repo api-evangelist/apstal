@@ -13,7 +13,7 @@ url: https://raw.githubusercontent.com/api-evangelist/apstal/refs/heads/main/api
 created: '2026-07-22'
 modified: '2026-08-13'
 image: https://apstal.com/logos/apstal-mark.svg
-specificationVersion: '0.21'
+specificationVersion: '0.23'
 tags:
   - analytics
   - web-analytics
