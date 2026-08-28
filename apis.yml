@@ -10,6 +10,17 @@ description: >-
   an llms.txt, OAuth 2.0 authorization-server and protected-resource metadata, and an MCP server card.
   The company is based in Poland and publishes a GDPR Data Processing Agreement.
 url: https://raw.githubusercontent.com/api-evangelist/apstal/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 created: '2026-07-22'
 modified: '2026-08-13'
 image: https://apstal.com/logos/apstal-mark.svg
