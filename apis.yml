@@ -27,20 +27,20 @@ image: https://apstal.com/logos/apstal-mark.svg
 specificationVersion: '0.23'
 tags:
   - Analytics
-  - web-analytics
-  - privacy
-  - session-replay
-  - heatmaps
+  - Web Analytics
+  - Privacy
+  - Session Replay
+  - Heatmaps
   - MCP
   - agent-native
-  - cookieless
+  - Cookieless
   - llms-txt
-  - bigquery
-  - gdpr
+  - BigQuery
+  - GDPR
   - A2A
-  - agent-skills
-  - bot-detection
-  - core-web-vitals
+  - Agent Skills
+  - Bot Detection
+  - Core Web Vitals
 tags_raw:
   - analytics
   - web-analytics
@@ -67,16 +67,16 @@ apis:
     baseURL: https://apstal.com/api/mcp
     tags:
       - Analytics
-      - web-analytics
-      - privacy
-      - session-replay
-      - heatmaps
+      - Web Analytics
+      - Privacy
+      - Session Replay
+      - Heatmaps
       - MCP
       - agent-native
-      - cookieless
+      - Cookieless
       - llms-txt
-      - bigquery
-      - gdpr
+      - BigQuery
+      - GDPR
     tags_raw:
       - analytics
       - web-analytics
@@ -110,11 +110,11 @@ apis:
     baseURL: https://apstal.com/api
     tags:
       - Analytics
-      - web-analytics
-      - session-replay
-      - core-web-vitals
-      - websocket
-      - server-sent-events
+      - Web Analytics
+      - Session Replay
+      - Core Web Vitals
+      - WebSocket
+      - Server-Sent Events
     tags_raw:
       - analytics
       - web-analytics
