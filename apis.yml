@@ -152,6 +152,8 @@ generated:
   confidence: 95
   at: '2026-07-22T20:28:11.444Z'
 common:
+- type: Website
+  url: https://www.apstal.com/
 - type: DomainSecurity
   url: security/apstal-domain-security.yml
 - type: WellKnown
