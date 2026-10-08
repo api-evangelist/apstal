@@ -88,3 +88,32 @@ api_access:
   note: >-
     The MCP server and REST endpoints are available on every plan including the free tier - MCP
     is metered by the same AI credit budget rather than gated behind a paid tier.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - subscription
+  units: []
+  plans:
+  - name: Basic
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Premium
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Max
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - month
