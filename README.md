@@ -1,4 +1,4 @@
-# apstal
+# Apstal
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,4 +64,129 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-AI-powered conversational website analytics tool that delivers insights into traffic, visitors, and conversions through natural language, plus a hosted MCP server for agent access to analytics data.
+AI-first website analytics and visitor tracking platform that replaces traditional dashboards with a natural-language chatbot interface, offering conversational analytics, cookieless tracking, session replays, heatmaps, funnels, error tracking, Core Web Vitals and AI-agent traffic detection. Apstal is agent-native by design: its primary programmatic surface is a hosted MCP server at https://apstal.com/api/mcp (JSON-RPC 2.0 over Streamable HTTP, protocol 2025-06-18) whose tools/list is answerable anonymously, backed by a documented REST ingestion and stats API, a WebSocket real-time stream, an SSE natural-language query endpoint, an A2A agent card, two provider-authored Agent Skills, an llms.txt, OAuth 2.0 authorization-server and protected-resource metadata, and an MCP server card. The company is based in Poland and publishes a GDPR Data Processing Agreement.
+
+**Areas:** Analytics · Web Analytics · Privacy · Session Replay · Heatmaps · MCP · Agent-Native · Cookieless · llms-txt · BigQuery · GDPR · A2A
+
+## Apstal on APIs.io
+
+Everything profiled for Apstal is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/apstal/](https://apis.io/providers/apstal/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [Apstal MCP Server](https://apis.io/apis/apstal/apstal-mcp-server/) — Hosted MCP server exposing Apstal analytics via JSON-RPC 2.0 over Streamable HTTP. Public tools (login, register, server_info) and authenticated tools…
+- [Apstal Analytics API](https://apis.io/apis/apstal/apstal-analytics-api/) — Documented REST surface for programmatic access to Apstal analytics: POST /api/v1/m for batched event ingestion (max 100 events per request), POST…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Apstal Realtime Events](https://apis.io/asyncapis/apstal/apstal-realtime-events/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [apstal-analytics](https://apis.io/servers/apstal/apstal-analytics/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Apstal Authentication](https://apis.io/security/apstal/apstal-authentication/)
+- [Apstal Domain Security](https://apis.io/security/apstal/apstal-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Apstal Scopes](https://apis.io/scopes/apstal/apstal-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Apstal Plans Pricing](https://apis.io/plans/apstal/apstal-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Apstal Rate Limits](https://apis.io/rate-limits/apstal/apstal-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.apstal.com/)
+- [Documentation](https://apstal.com/docs)
+- [Getting started](https://apstal.com/docs/getting-started)
+- [API reference](https://apstal.com/docs/api)
+- [Pricing](https://apstal.com/pricing)
+- [Sign up](https://apstal.com/login)
+- [Support](https://apstal.com/contact)
+- [Blog](https://apstal.com/blog)
+- [Compliance](https://apstal.com/dpa)
+- [Terms of service](https://apstal.com/terms)
+- [Privacy policy](https://apstal.com/privacy)
+- [GitHub](https://github.com/apstal)
+- [Status](https://status.apstal.com)
+
+## API Evangelist rating
+
+**Kin Score 56.5** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 70.0 |
+| Contract quality | 39.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 42.1 |
+| Developer ergonomics | 71.4 |
+| Access clarity | 71.1 |
+
+**Agent readiness 38.8** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | flavored (partial credit) |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 39.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/apstal/](https://apis.io/providers/apstal/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Apstal: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/apstal/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
