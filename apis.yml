@@ -38,7 +38,7 @@ accessModel:
   - scopes
   - rate-limits
   - security
-  generated: '2026-11-06'
+  generated: '2026-11-13'
   method: derived
 created: '2026-07-22'
 modified: '2026-08-13'
