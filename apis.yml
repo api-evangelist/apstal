@@ -1,3 +1,4 @@
+aid: apstal
 name: Apstal
 description: >-
   AI-first website analytics and visitor tracking platform that replaces traditional dashboards with a
@@ -38,7 +39,7 @@ accessModel:
   - scopes
   - rate-limits
   - security
-  generated: '2026-11-13'
+  generated: '2026-11-20'
   method: derived
 created: '2026-07-22'
 modified: '2026-08-13'
@@ -77,7 +78,8 @@ tags_raw:
   - bot-detection
   - core-web-vitals
 apis:
-  - name: Apstal MCP Server
+  - aid: apstal:apstal-mcp-server
+    name: Apstal MCP Server
     description: >-
       Hosted MCP server exposing Apstal analytics via JSON-RPC 2.0 over Streamable HTTP. Public tools (login, register,
       server_info) and authenticated tools (execute_sql, get_analytics, list_projects, register_domain, get_schema,
@@ -117,7 +119,8 @@ apis:
         url: https://apstal.com/docs/mcp
       - type: LLMsTxt
         url: llms/apstal-llms.txt
-  - name: Apstal Analytics API
+  - aid: apstal:apstal-analytics-api
+    name: Apstal Analytics API
     description: >-
       Documented REST surface for programmatic access to Apstal analytics: POST /api/v1/m for batched event
       ingestion (max 100 events per request), POST /api/v1/stream for rrweb session-replay chunk upload,
